@@ -3,9 +3,6 @@
 #include <iterator>
 #include <cstring>
 
-#include <fcntl.h>
-#include <unistd.h>
-
 void prefFunc(const char* arr, int* pref, size_t len)
 {
     for (size_t i = 1; i < len; i++)
