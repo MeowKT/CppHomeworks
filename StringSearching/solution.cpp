@@ -20,7 +20,7 @@ void prefFunc(const char* arr, int* z, size_t len)
     }
 }
 
-bool checkSubstr(const int* z, size_t len, int exampleLen)
+bool checkSubstr(const int* z, size_t len, size_t exampleLen)
 {
     for (size_t i = 0; i < len; i++)
     {
@@ -48,11 +48,11 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    __int32_t longestPrefix = 0;
-    __int32_t len = std::strlen(argv[1]);
+    size_t longestPrefix = 0;
+    size_t len = std::strlen(argv[1]);
     for (;;)
     {
-        __int32_t szBuf = 1; // for all
+        size_t szBuf = 1; // for all
         char* buffer = new char[szBuf + len + 1 + longestPrefix];
         int* z = new int[szBuf + len + 1 + longestPrefix];
         memset(z, 0, (szBuf + len + 1 + longestPrefix) * sizeof(int));
