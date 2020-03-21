@@ -3,7 +3,7 @@
 #include <iterator>
 #include <cstring>
 
-void prefFunc(const char* arr, int* pref, size_t len)
+void prefFunc(const char* arr, int32_t* pref, size_t len)
 {
     for (size_t i = 1; i < len; i++)
     {
@@ -14,20 +14,24 @@ void prefFunc(const char* arr, int* pref, size_t len)
         {
             j++;
         }
+
         pref[i] = j;
     }
 }
 
-bool checkSubstr(const int* pref, size_t len, size_t exampleLen)
+void addToPref(const char* arr, int32_t &prev, int32_t& cur, const int32_t *pref, char last)
 {
-    for (size_t i = 0; i < len; i++)
+    size_t j = cur;
+    while (j > 0 && last != arr[j])
     {
-        if (pref[i] == exampleLen)
-        {
-            return 1;
-        }
+        j = pref[j - 1];
     }
-    return 0;
+    if (last == arr[j])
+    {
+        j++;
+    }
+    prev = cur;
+    cur = j;
 }
 
 int main(int argc, char* argv[])
@@ -47,42 +51,25 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    size_t longestPrefix = 0;
     size_t len = std::strlen(argv[1]);
-    for (;;)
-    {
-        size_t szBuf = 1; // for all
-        char* buffer = new char[szBuf + len + 1 + longestPrefix];
-        int* pref = new int[szBuf + len + 1 + longestPrefix];
-        memset(pref, 0, (szBuf + len + 1 + longestPrefix) * sizeof(int));
 
-        std::memcpy(buffer, argv[1], len * sizeof(char));
-        buffer[len] = '$';
+    int32_t* pref = new int32_t[len];
+    memset(pref, 0, len * sizeof(int32_t));
 
-        std::memcpy(buffer + len + 1, argv[1], longestPrefix * sizeof(char));
-        ssize_t bytes_read = fread(buffer + longestPrefix + len + 1, sizeof (char), szBuf, fd);
+    prefFunc(argv[1], pref, len);
+    int32_t prev = 0;
+    int32_t cur = 0;
 
-        if (bytes_read < 0)
-        {
-            perror("read failed");
-            fclose(fd);
-            return EXIT_FAILURE;
-        }
-
-        if (bytes_read == 0)
-            break;
-
-        prefFunc(buffer, pref, len + szBuf + longestPrefix + 1);
-
-        if (checkSubstr(pref, len + szBuf + longestPrefix + 1, len))
-        {
+    char c;
+    while (c = getc(fd), c != EOF) {
+        addToPref(argv[1], prev, cur, pref, c);
+        if (cur == len) {
             std::cout << "TRUE";
             fclose(fd);
-            return 0;
+            return EXIT_SUCCESS;
         }
-
-        longestPrefix = pref[len + szBuf + longestPrefix];
     }
+
     std::cout << "FALSE";
     fclose(fd);
     return EXIT_SUCCESS;
