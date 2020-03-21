@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
+#include <cstring>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -41,8 +42,9 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    int fd = open(argv[2], O_RDONLY | O_CLOEXEC);
-    if (fd < 0)
+    FILE* fd = fopen(argv[2], "r");
+
+    if (!fd)
     {
         perror("open failed");
         return EXIT_FAILURE;
@@ -61,12 +63,12 @@ int main(int argc, char* argv[])
         buffer[len] = '$';
 
         std::memcpy(buffer + len + 1, argv[1], longestPrefix * sizeof(char));
-        ssize_t bytes_read = read(fd, buffer + longestPrefix + len + 1, szBuf);
+        ssize_t bytes_read = fread(buffer + longestPrefix + len + 1, sizeof (char), szBuf, fd);
 
         if (bytes_read < 0)
         {
             perror("read failed");
-            close(fd);
+            fclose(fd);
             return EXIT_FAILURE;
         }
 
@@ -78,13 +80,13 @@ int main(int argc, char* argv[])
         if (checkSubstr(pref, len + szBuf + longestPrefix + 1, len))
         {
             std::cout << "TRUE";
-            close(fd);
+            fclose(fd);
             return 0;
         }
 
         longestPrefix = pref[len + szBuf + longestPrefix];
     }
     std::cout << "FALSE";
-    close(fd);
+    fclose(fd);
     return EXIT_SUCCESS;
 }
