@@ -5,21 +5,27 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void prefFunc(const char* arr, int* z, size_t len) {
-    for (size_t i = 1; i < len; i++) {
+void prefFunc(const char* arr, int* z, size_t len)
+{
+    for (size_t i = 1; i < len; i++)
+    {
         size_t j = z[i - 1];
         while (j > 0 && arr[i] != arr[j])
             j = z[j - 1];
-        if (arr[i] == arr[j]) {
+        if (arr[i] == arr[j])
+        {
             j++;
         }
         z[i] = j;
     }
 }
 
-bool checkSubstr(const int* z, size_t len, int exampleLen) {
-    for (size_t i = 0; i < len; i++) {
-        if (z[i] == exampleLen) {
+bool checkSubstr(const int* z, size_t len, int exampleLen)
+{
+    for (size_t i = 0; i < len; i++)
+    {
+        if (z[i] == exampleLen)
+        {
             return 1;
         }
     }
@@ -69,7 +75,8 @@ int main(int argc, char* argv[])
 
         prefFunc(buffer, z, len + szBuf + longestPrefix + 1);
 
-        if (checkSubstr(z, len + szBuf + longestPrefix + 1, len)) {
+        if (checkSubstr(z, len + szBuf + longestPrefix + 1, len))
+        {
             std::cout << "TRUE";
             close(fd);
             return 0;
