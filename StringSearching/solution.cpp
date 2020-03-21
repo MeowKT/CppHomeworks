@@ -5,26 +5,26 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void prefFunc(const char* arr, int* z, size_t len)
+void prefFunc(const char* arr, int* pref, size_t len)
 {
     for (size_t i = 1; i < len; i++)
     {
-        size_t j = z[i - 1];
+        size_t j = pref[i - 1];
         while (j > 0 && arr[i] != arr[j])
-            j = z[j - 1];
+            j = pref[j - 1];
         if (arr[i] == arr[j])
         {
             j++;
         }
-        z[i] = j;
+        pref[i] = j;
     }
 }
 
-bool checkSubstr(const int* z, size_t len, size_t exampleLen)
+bool checkSubstr(const int* pref, size_t len, size_t exampleLen)
 {
     for (size_t i = 0; i < len; i++)
     {
-        if (z[i] == exampleLen)
+        if (pref[i] == exampleLen)
         {
             return 1;
         }
@@ -54,8 +54,8 @@ int main(int argc, char* argv[])
     {
         size_t szBuf = 1; // for all
         char* buffer = new char[szBuf + len + 1 + longestPrefix];
-        int* z = new int[szBuf + len + 1 + longestPrefix];
-        memset(z, 0, (szBuf + len + 1 + longestPrefix) * sizeof(int));
+        int* pref = new int[szBuf + len + 1 + longestPrefix];
+        memset(pref, 0, (szBuf + len + 1 + longestPrefix) * sizeof(int));
 
         std::memcpy(buffer, argv[1], len * sizeof(char));
         buffer[len] = '$';
@@ -73,16 +73,16 @@ int main(int argc, char* argv[])
         if (bytes_read == 0)
             break;
 
-        prefFunc(buffer, z, len + szBuf + longestPrefix + 1);
+        prefFunc(buffer, pref, len + szBuf + longestPrefix + 1);
 
-        if (checkSubstr(z, len + szBuf + longestPrefix + 1, len))
+        if (checkSubstr(pref, len + szBuf + longestPrefix + 1, len))
         {
             std::cout << "TRUE";
             close(fd);
             return 0;
         }
 
-        longestPrefix = z[len + szBuf + longestPrefix];
+        longestPrefix = pref[len + szBuf + longestPrefix];
     }
     std::cout << "FALSE";
     close(fd);
