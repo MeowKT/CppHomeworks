@@ -14,24 +14,20 @@ void prefFunc(const char* arr, int32_t* pref, size_t len)
         {
             j++;
         }
-
         pref[i] = j;
     }
 }
 
-void addToPref(const char* arr, int32_t &prev, int32_t& cur, const int32_t *pref, char last)
+void addToPref(const char* arr, int32_t& cur, const int32_t *pref, char last)
 {
-    size_t j = cur;
-    while (j > 0 && last != arr[j])
+    while (cur > 0 && last != arr[cur])
     {
-        j = pref[j - 1];
+        cur = pref[cur - 1];
     }
-    if (last == arr[j])
+    if (last == arr[cur])
     {
-        j++;
+        cur++;
     }
-    prev = cur;
-    cur = j;
 }
 
 int main(int argc, char* argv[])
@@ -51,18 +47,17 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    size_t len = std::strlen(argv[1]);
+    size_t len = strlen(argv[1]);
 
     int32_t* pref = new int32_t[len];
     memset(pref, 0, len * sizeof(int32_t));
 
     prefFunc(argv[1], pref, len);
-    int32_t prev = 0;
     int32_t cur = 0;
 
     char c;
     while (c = getc(fd), c != EOF) {
-        addToPref(argv[1], prev, cur, pref, c);
+        addToPref(argv[1], cur, pref, c);
         if (cur == len) {
             std::cout << "TRUE";
             fclose(fd);
