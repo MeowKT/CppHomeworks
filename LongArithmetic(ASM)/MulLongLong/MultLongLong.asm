@@ -3,7 +3,7 @@
                 global          _start
 _start:
 
-                sub             rsp, 4 * 128 * 8
+                sub             rsp, 5 * 128 * 8
                 lea             rdi, [rsp + 128 * 8]
                 mov             rcx, 128
                 call            read_long
@@ -11,6 +11,7 @@ _start:
                 call            read_long
                 lea             rsi, [rsp + 128 * 8]
                 lea             r8, [rsp + 2 * 128 * 8]
+                lea 			r9, [rsp + 4 * 128 * 8]
 ;   rsi - first multiplyer
 ;   rdi - second multiplyer
 ;   r8 - answer 
@@ -35,16 +36,13 @@ mul_long_long:
                 push            rcx 
 
                 xor             r10, r10
-
-                sub             rsp, 128 * 8
-                lea             r9, [rsp]
-
+                
                 push            rdi
                 push            rsi
                 mov             rsi, r9
                 call            copy_long_number
-                pop             rdi
                 pop             rsi
+                pop             rdi
 
                 clc
 .loop:          
@@ -53,6 +51,7 @@ mul_long_long:
                 call            mul_long_short
                 pop             rsi                
                 add             rsi, 8
+       
 
                 push            rsi
                 push            rdi
@@ -61,23 +60,23 @@ mul_long_long:
                 inc             r10
                 pop             rdi
                 pop             rsi
+                
 
                 push            rdi
                 push            rsi
-                mov             rdi, r9
+                mov             rsi, rdi
+                mov 			rdi, r9
                 call            copy_long_number
-                pop             rdi
                 pop             rsi
+                pop             rdi
 
                 dec             rcx
                 jnz             .loop
-                
-                add             rsp, 128 * 8
 
                 pop             rcx
                 pop             rdi 
                 pop             rsi
-                                
+                
                 ret
 
 ; copies long number
@@ -88,7 +87,6 @@ copy_long_number:
                 push            rdi
                 push            rsi 
                 push            rcx                
-    
          
 .loop:          
                 mov             rax, [rdi]
