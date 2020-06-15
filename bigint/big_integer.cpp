@@ -140,7 +140,7 @@ big_integer operator/(big_integer const& l, big_integer const& r)
         size_t m = b.dig.size() + 1;
         size_t n = a.dig.size();
         ans.dig.resize(n - m + 1);
-        uint32_t div = 0;
+        uint32_t quot = 0;
         for (size_t i = m, j = ans.dig.size() - 1; i <= n; i++, j--)
         {
             uint128_t x = ((uint128_t) a.dig[a.dig.size() - 1] << 64)
@@ -148,13 +148,13 @@ big_integer operator/(big_integer const& l, big_integer const& r)
                         | ((uint128_t) a.dig[a.dig.size() - 3]);
             uint128_t y = ((uint128_t) b.dig[b.dig.size() - 1] << 32)
                         | ((uint128_t) b.dig[b.dig.size() - 2]);
-            div = (uint32_t) (x / y);
-            ml = b * big_integer(std::to_string(div));
+            quot = (uint32_t) (x / y);
+            ml = b * big_integer(std::to_string(quot));
             if (!less(a, abs(ml), m)) {
-                div--;
+                quot--;
                 ml -= b;
             }
-            ans.dig[j] = div;
+            ans.dig[j] = quot;
             difference(a, abs(ml), m);
             if (!a.dig.back())
             {
