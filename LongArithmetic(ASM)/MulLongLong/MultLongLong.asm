@@ -27,7 +27,7 @@ _start:
                 jmp             exit
                 
 ; multuplies two long numbers
-;    rdi -  adress of multiplyer #1 (long number)
+;    rdi - adress of multiplyer #1 (long number)
 ;    rsi - adress of multiplyer #2 (long number)
 ;    rcx - length of long number in qwords
 ; result:

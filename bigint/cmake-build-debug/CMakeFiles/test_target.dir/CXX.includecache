@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/savva/Downloads/cpp-course-master/bigint/big_integer.cpp
+big_integer.h
+/Users/savva/Downloads/cpp-course-master/bigint/big_integer.h
+
+/Users/savva/Downloads/cpp-course-master/bigint/big_integer.h
+utility
+-
+vector
+-
+string
+-
+algorithm
+-
+functional
+-
+

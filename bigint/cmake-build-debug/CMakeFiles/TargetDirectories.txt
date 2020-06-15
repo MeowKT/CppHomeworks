@@ -1,0 +1,4 @@
+/Users/savva/Downloads/cpp-course-master/bigint/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/savva/Downloads/cpp-course-master/bigint/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/savva/Downloads/cpp-course-master/bigint/cmake-build-debug/CMakeFiles/test_target.dir
+/Users/savva/Downloads/cpp-course-master/bigint/cmake-build-debug/CMakeFiles/big_integer_testing.dir
